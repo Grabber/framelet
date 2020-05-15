@@ -1,4 +1,5 @@
 import namespace from './namespace';
+
 import { listen, unListen, invariant } from './utils';
 
 /**
