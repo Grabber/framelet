@@ -27,15 +27,22 @@ export default (project, target, origin = '*') => {
   let channelListeners = [];
 
   const encode = (channel, message) => {
-    return {
+    return JSON.stringify({
       channel,
       message,
       project,
-    };
+    });
   };
 
   const decode = message => {
-    return message;
+    let m = {};
+
+    try {
+      m = JSON.parse(message);
+    } catch (e) {
+    }
+
+    return m;
   };
 
   /**
