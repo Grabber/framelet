@@ -1,6 +1,6 @@
 {
   "author": "Luiz Vitor Martinez Cardoso <luiz.martinez@medicaa.com.br>",
-  "description": "lightweight iframe messaging library",
+  "description": "lightweight messaging library",
   "license": "MIT",
   "name": "framelet",
   "version": "1.0.0",
