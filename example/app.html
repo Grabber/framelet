@@ -49,6 +49,8 @@
       function sendMessage() {
          framelet.send('app.msg', new Date() + ' => ' + 'hello world!');
       }
+
+      framelet.on('app.*', listener);
    </script>
 </body>
 </html>
