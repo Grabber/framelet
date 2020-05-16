@@ -1,44 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>post-messenger - iframe</title>
+   <meta charset="UTF-8">
+   <title>post-messenger - iframe</title>
 </head>
 <body>
-<div id="root">
-  <pre id="list"></pre>
-  <div>
-    <input type="button" value="Once" onclick="javascript: onceListener()" />
-    <input type="button" value="On" onclick="javascript: onListener()" />
-    <input type="button" value="Off" onclick="javascript: offListener()" />
-    <input type="button" value="Send" onclick="javascript: sendMessage()" />
-  </div>
-</div>
-<script src="../dist/post-messenger.min.js" type="application/javascript"></script>
-<script type="application/javascript">
-  var pm = new PostMessenger('uniqueId', window.parent);
+   <div id="root">
+      <pre id="list"></pre>
+      <div>
+         <input type="button" value="Once" onclick="javascript: onceListener()" />
+         <input type="button" value="On" onclick="javascript: onListener()" />
+         <input type="button" value="Off" onclick="javascript: offListener()" />
+         <input type="button" value="Send" onclick="javascript: sendMessage()" />
+      </div>
+   </div>
+   <script src="../dist/post-messenger.min.js" type="application/javascript"></script>
+   <script type="application/javascript">
+      var pm = new PostMessenger('uniqueId', window.parent);
 
-  function listener(message) {
-    const r = document.querySelector('#list');
-    console.log(message);
-    r.innerHTML = r.innerHTML + '\n' + message;
-  }
+      function listener(message) {
+         const r = document.querySelector('#list');
+         console.log(message);
+         r.innerHTML = r.innerHTML + '\n' + message;
+      }
 
-  function onceListener() {
-    pm.once('iframe.*', listener);
-  }
+      function onceListener() {
+         pm.once('iframe.*', listener);
+      }
 
-  function onListener() {
-    pm.on('iframe.*', listener);
-  }
+      function onListener() {
+         pm.on('iframe.*', listener);
+      }
 
-  function offListener() {
-    pm.off('iframe.*', listener);
-  }
+      function offListener() {
+         pm.off('iframe.*', listener);
+      }
 
-  function sendMessage() {
-    pm.send('iframe.msg', new Date() + ', Hello world.');
-  }
-</script>
+      function sendMessage() {
+         pm.send('iframe.msg', new Date() + ', Hello world.');
+      }
+   </script>
 </body>
 </html>

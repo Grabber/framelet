@@ -1,5 +1,22 @@
 # post-messenger
 
+
+
+/**
+ * const pm = Messenger('project', window.parent);
+ *
+ * // listen channel
+ * pm.on('channel', message => { });
+ *
+ * // listen channel
+ * pm.once('channel_once', message => { });
+ *
+ * // send message to window.parent
+ * pm.send('channel', 'Hello world');
+ *
+ * pm.off(channel, func); // cancel listen
+ */
+
 > A simple wrapper of `window.postMessage` for cross-document communication with each other.
 >
 > 一个简单的 `window.postMessage` 封装，用于跨文档的双向数据通信。

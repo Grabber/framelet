@@ -21,8 +21,9 @@
       </div>
    </div>
    <script src="../dist/post-messenger.min.js" type="application/javascript"></script>
+
    <script type="application/javascript">
-      var pm = new PostMessenger('uniqueId', document.querySelector('#iframe').contentWindow);
+      var framelet = new Framelet('medicaa', document.querySelector('#iframe').contentWindow);
 
       function listener(message) {
          const r = document.querySelector('#list');
@@ -31,19 +32,19 @@
       }
 
       function onceListener() {
-         pm.once('iframe.*', listener);
+         framelet.once('iframe.*', listener);
       }
 
       function onListener() {
-         pm.on('iframe.*', listener);
+         framelet.on('iframe.*', listener);
       }
 
       function offListener() {
-         pm.off('iframe.*', listener);
+         framelet.off('iframe.*', listener);
       }
 
       function sendMessage() {
-         pm.send('iframe.data', new Date() + ', Hello world.');
+         framelet.send('iframe.data', new Date() + ', Hello world.');
       }
    </script>
 </body>

@@ -1,3 +1,3 @@
-import Messenger from './messenger';
+import Framelet from './framelet';
 
-export default Messenger;
+export default Framelet;
