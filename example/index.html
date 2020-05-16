@@ -22,13 +22,12 @@
 
       .app-container-1 {
          border: none;
-         height: 50%;
+         height: 100%;
          left: auto;
          overflow: auto;
          position: fixed;
-         right: auto;
-         top: 50%;
-         width: 100%;
+         right: 0px;
+         width: 50%;
       }
    </style>
 
@@ -40,7 +39,7 @@
          <input type="button" value="once" onclick="javascript:onceListener();"/>
          <input type="button" value="on" onclick="javascript:onListener();"/>
          <input type="button" value="off" onclick="javascript:offListener();"/>
-         <input type="button" value="send" onclick="javascript:sendMessage();"/>
+         <input type="button" value="send to child" onclick="javascript:sendMessage();"/>
       </div>
 
       <pre id="list"></pre>
