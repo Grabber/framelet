@@ -5,8 +5,9 @@
    <title>framelet - app</title>
 </head>
 <body>
-   <div id="root">
+   <div>
       <pre id="list"></pre>
+
       <div>
          <input type="button" value="once" onclick="javascript:onceListener();"/>
          <input type="button" value="on" onclick="javascript:onListener();"/>
@@ -18,7 +19,7 @@
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var framelet = new Framelet('uniqueId', window.parent);
+      var framelet = new Framelet('framelet', window.parent);
 
       function listener(message) {
          const r = document.querySelector('#list');
@@ -39,7 +40,7 @@
       }
 
       function sendMessage() {
-         framelet.send('app.msg', new Date() + ', hello world.');
+         framelet.send('app.msg', new Date() + '=> ' + 'hello world!');
       }
    </script>
 </body>

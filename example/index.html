@@ -10,9 +10,11 @@
    </style>
 </head>
 <body>
-   <div id="root">
+   <div>
       <pre id="list"></pre>
+
       <iframe name="app" src="//127.0.0.1:8080/example/app.html" id="app"></iframe>
+
       <div>
          <input type="button" value="once" onclick="javascript:onceListener();"/>
          <input type="button" value="on" onclick="javascript:onListener();"/>
@@ -45,7 +47,7 @@
       }
 
       function sendMessage() {
-         framelet.send('app.data', new Date() + ', hello world.');
+         framelet.send('app.data', new Date() + '=> ' + 'hello world!');
       }
    </script>
 </body>
