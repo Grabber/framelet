@@ -2,18 +2,47 @@
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <title>framelet - parent</title>
-   <style>
-      iframe, pre {
-         width: 100%;
+   
+   <style type="text/css">
+      .app {
+         display: block;
+         left: 0px;
+         top: 0px;
+      }
+
+      .app-container {
+         bottom: auto;
+         display: block;
+         height: 100%;
+         left: 0px;
+         position: absolute;
+         right: auto;
+         top: 0px;
+      }
+
+      .app-container-1 {
+         border: none;
+         height: 100%;
+         left: auto;
+         overflow: auto;
+         position: fixed;
+         right: 0px;
+         width: 50%;
+         z-index: 2147483637;
       }
    </style>
+
+   <title>framelet - parent</title>
 </head>
 <body>
    <div>
-      <pre id="list"></pre>
+      <div style="background-color: greenyellow; left: 0px; right: auto; width: 50%;" id="list"></div>
 
-      <iframe name="app" src="//127.0.0.1:8080/example/app.html" id="app"></iframe>
+      <div class="app" id="app">
+         <div class="app-container" id="app-container">
+            <iframe name="app" src="//127.0.0.1:8080/example/app.html" class="app-container-1" id="app-container-1"></iframe>
+         </div>
+      </div>
 
       <div>
          <input type="button" value="once" onclick="javascript:onceListener();"/>
@@ -26,7 +55,7 @@
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var framelet = new Framelet('framelet', document.querySelector('#app').contentWindow);
+      var framelet = new Framelet('framelet', document.querySelector('#app-container-1').contentWindow);
 
       function listener(message) {
          const r = document.querySelector('#list');

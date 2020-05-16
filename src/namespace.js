@@ -1,3 +1,5 @@
+'use strict';
+
 import { invariant } from './utils';
 
 function match(namespaces, needles, option) {

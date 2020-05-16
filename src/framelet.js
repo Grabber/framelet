@@ -1,3 +1,5 @@
+'use strict';
+
 import namespace from './namespace';
 
 import { registerEventListener, unregisterEventListener, invariant } from './utils';
