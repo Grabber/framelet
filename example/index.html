@@ -22,13 +22,13 @@
 
       .app-container-1 {
          border: none;
-         height: 100%;
+         height: 50%;
          left: auto;
          overflow: auto;
          position: fixed;
-         right: 0px;
-         width: 50%;
-         z-index: 2147483637;
+         right: auto;
+         top: 50%;
+         width: 100%;
       }
    </style>
 
@@ -36,19 +36,19 @@
 </head>
 <body>
    <div>
-      <pre id="list"></pre>
-
-      <div class="app" id="app">
-         <div class="app-container" id="app-container">
-            <iframe name="app" src="//127.0.0.1:8080/example/app.html" class="app-container-1" id="app-container-1"></iframe>
-         </div>
-      </div>
-
       <div>
          <input type="button" value="once" onclick="javascript:onceListener();"/>
          <input type="button" value="on" onclick="javascript:onListener();"/>
          <input type="button" value="off" onclick="javascript:offListener();"/>
          <input type="button" value="send" onclick="javascript:sendMessage();"/>
+      </div>
+
+      <pre id="list"></pre>
+   </div>
+
+   <div class="app" id="app">
+      <div class="app-container" id="app-container">
+         <iframe name="app" src="//127.0.0.1:8080/example/app.html" class="app-container-1" id="app-container-1"></iframe>
       </div>
    </div>
 
