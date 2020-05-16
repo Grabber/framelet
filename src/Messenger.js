@@ -119,7 +119,7 @@ export default (project, target, origin = '*') => {
 
    const send = (ch, message) => {
       // just throw when need to send message.
-      invariant(target && target.postMessage, 'Messenger\'s target should has `postMessage` function.');
+      invariant(target && target.postMessage, 'messenger\'s target should has `postMessage` function.');
 
       target.postMessage(
          encode(ch, message),

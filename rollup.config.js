@@ -1,20 +1,31 @@
-import babel from 'rollup-plugin-babel';
-import uglify from 'rollup-plugin-uglify';
+import babel from '@rollup/plugin-babel';
+import buble from '@rollup/plugin-buble';
+import resolve from '@rollup/plugin-node-resolve';
+
+import { terser } from 'rollup-plugin-terser';
 
 export default {
    entry: 'src/index.js',
    output: {
       file: 'dist/post-messenger.min.js',
-      name: 'PostMessenger',
       format: 'umd',
+      name: 'PostMessage',
    },
    plugins: [
       babel({
+         babelHelpers: 'bundled',
+         babelrc: false,
          exclude: 'node_modules/**',
+         presets: [
+            ['@babel/preset-env', { modules: false, loose: true }],
+         ],
       }),
-      uglify({
-         output: { comments: false },
-         compress: { warnings: false }
+      resolve({
+         browser: true,
       }),
+      buble({
+         exclude: ['node_modules/**'],
+      }),
+      terser(),
    ],
 };
