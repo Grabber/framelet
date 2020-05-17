@@ -37,13 +37,13 @@ export default (project, target, origin = '*') => {
 
    const listenerEntry = () => {
       return e => {
-         const { channel: msgChannel, message, project: msgProject } = decode(e.data);
+         const { channel: msg_channel, message, project: msg_project } = decode(e.data);
 
-         if (msgProject === project) {
+         if (msg_project === project) {
             for (let i = 0; i < listeners.length; i += 1) {
                const { ch, cb, once } = listeners[i];
 
-               if (namespace(ch).match(msgChannel)) {
+               if (namespace(ch).match(msg_channel)) {
                   if (once) {
                      listeners.splice(i, 1);
 
@@ -96,7 +96,7 @@ export default (project, target, origin = '*') => {
    };
 
    const send = (ch, message) => {
-      invariant(target && target.postMessage, '`target` must have a callable `postMessage` function');
+      invariant(target && target.postMessage, '`target` can\'t call `postMessage` function');
 
       target.postMessage(
          encode(ch, message),
