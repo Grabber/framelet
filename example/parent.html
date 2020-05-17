@@ -20,7 +20,7 @@
          top: 0px;
       }
 
-      .child-container-frame {
+      .child-container-iframe {
          border: none;
          height: 100%;
          left: auto;
@@ -43,26 +43,25 @@
    </div>
 
    <div class="child" id="child">
-      <div class="child-container" id="child-container">
-         <!--iframe name="child" src="//127.0.0.1:8080/example/child.html" class="child-container-1" id="child-container-1"></iframe-->
-      </div>
+      <div class="child-container" id="child-container"></div>
    </div>
 
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var frame = document.createElement('iframe');
-      frame.classList.add('child-container-frame');
-      frame.name = 'child';
-      frame.src = '//127.0.0.1:8080/example/child.html';
+      var iframe = document.createElement('iframe');
+      iframe.classList.add('child-container-iframe');
+      iframe.id = 'child-container-iframe';
+      iframe.name = 'child';
+      iframe.src = '//127.0.0.1:8080/example/child.html';
 
       var container = document.getElementById('child-container');
 
       if (container) {
-         container.appendChild(frame);
+         container.appendChild(iframe);
       }
 
-      var framelet = new Framelet('example', frame.contentWindow);
+      var framelet = new Framelet('example', iframe.contentWindow);
 
       function listener(msg) {
          console.log(msg);
@@ -75,10 +74,10 @@
       function onListener() {
          framelet.on('topic.*', listener);
 
-         var frame = document.getElementById('child-container-1');
+         var iframe = document.getElementById('child-container-iframe');
 
-         if (frame) {
-            frame.style.display = 'none';
+         if (iframe) {
+            iframe.style.display = 'none';
          }
       }
 
