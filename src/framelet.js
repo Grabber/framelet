@@ -5,7 +5,7 @@ import namespace from './namespace';
 import { registerEventListener, unregisterEventListener, invariant } from './utils';
 
 export default (project, target, origin = '*') => {
-   let listeners = [];
+   let channels = [];
    let listener = null;
 
    const encode = (channel, message) => {
@@ -28,7 +28,7 @@ export default (project, target, origin = '*') => {
    };
 
    const check = () => {
-      if (listeners.length === 0 && listener) {
+      if (channels.length === 0 && listener) {
          unregisterEventListener(listener);
 
          listener = null;
@@ -40,12 +40,12 @@ export default (project, target, origin = '*') => {
          const { channel: msg_channel, message, project: msg_project } = decode(e.data);
 
          if (msg_project === project) {
-            for (let i = 0; i < listeners.length; i += 1) {
-               const { ch, cb, once } = listeners[i];
+            for (let i = 0; i < channels.length; i += 1) {
+               const { ch, cb, once } = channels[i];
 
                if (namespace(ch).match(msg_channel)) {
                   if (once) {
-                     listeners.splice(i, 1);
+                     channels.splice(i, 1);
 
                      i -= 1;
                   }
@@ -60,13 +60,13 @@ export default (project, target, origin = '*') => {
    };
 
    const on = (ch, cb, once = false) => {
-      if (listeners.length === 0) {
+      if (channels.length === 0) {
          listener = listenerEntry();
 
          registerEventListener(listener);
       }
 
-      listeners.push({
+      channels.push({
          ch,
          cb,
          once,
@@ -79,13 +79,13 @@ export default (project, target, origin = '*') => {
 
    const off = (ch, cb) => {
       if (ch === undefined && cb === undefined) {
-         listeners = [];
+         channels = [];
       } else {
-         for (let i = 0; i < listeners.length; i += 1) {
-            const { ch: h, cb: b } = listeners[i];
+         for (let i = 0; i < channels.length; i += 1) {
+            const { ch: h, cb: b } = channels[i];
 
             if (h === ch && b === cb) {
-               listeners.splice(i, 1);
+               channels.splice(i, 1);
 
                i -= 1;
             }
@@ -104,11 +104,9 @@ export default (project, target, origin = '*') => {
       );
    };
 
-   const get_listener = () => listener;
-
    return {
-      get_listener,
-      listeners,
+      listener,
+      channels,
       off,
       on,
       once,
