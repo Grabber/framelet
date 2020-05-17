@@ -2,7 +2,9 @@
 
 import namespace from './namespace';
 
-import { registerEventListener, unregisterEventListener, invariant } from './utils';
+import { invariant,
+         registerEventListener,
+         unregisterEventListener } from './utils';
 
 export default (sandbox, target, origin = '*') => {
    let channels = [];
