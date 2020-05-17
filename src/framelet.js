@@ -4,49 +4,46 @@ import namespace from './namespace';
 
 import { registerEventListener, unregisterEventListener, invariant } from './utils';
 
-class Framelet {
-   constructor(namespace, target, origin = '*') {
-      let channels = [];
-      let event_listener = null;
-      let child = target;
-   }
+export default (sandbox, target, origin = '*') => {
+   let channels = [];
+   let listener = null;
 
-   encode(topic, message) {
+   const encode = (channel, message) => {
       return JSON.stringify({
+         channel,
          message,
-         namespace,
-         topic,
+         sandbox,
       });
-   }
+   };
 
-   decode(message) {
-      let m = {};
+   const decode = message => {
+      let msg = {};
 
       try {
-         m = JSON.parse(message);
+         msg = JSON.parse(message);
       } catch (e) {
       }
 
-      return m;
-   }
+      return msg;
+   };
 
-   check() {
-      if (channels.length === 0 && event_listener) {
-         unregisterEventListener(event_listener);
+   const check = () => {
+      if (channels.length === 0 && listener) {
+         unregisterEventListener(listener);
 
-         event_listener = null;
+         listener = null;
       }
-   }
+   };
 
-   listenerEntry() {
+   const listenerEntry = () => {
       return e => {
-         const { topic: msg_topic, message, namespace: msg_namespace } = decode(e.data);
+         const { channel: msg_channel, message, sandbox: msg_sandbox } = decode(e.data);
 
-         if (msg_namespace === namespace) {
+         if (msg_sandbox === sandbox) {
             for (let i = 0; i < channels.length; i += 1) {
                const { ch, cb, once } = channels[i];
 
-               if (namespace(ch).match(msg_topic)) {
+               if (namespace(ch).match(msg_channel)) {
                   if (once) {
                      channels.splice(i, 1);
 
@@ -60,13 +57,13 @@ class Framelet {
             check();
          }
       }
-   }
+   };
 
-   on(ch, cb, once = false) {
+   const on = (ch, cb, once = false) => {
       if (channels.length === 0) {
-         event_listener = listenerEntry();
+         listener = listenerEntry();
 
-         registerEventListener(event_listener);
+         registerEventListener(listener);
       }
 
       channels.push({
@@ -74,13 +71,13 @@ class Framelet {
          cb,
          once,
       });
-   }
+   };
 
-   once(ch, cb) {
+   const once = (ch, cb) => {
       on(ch, cb, true);
-   }
+   };
 
-   off(ch, cb) {
+   const off = (ch, cb) => {
       if (ch === undefined && cb === undefined) {
          channels = [];
       } else {
@@ -96,18 +93,23 @@ class Framelet {
       }
 
       check();
-   }
+   };
 
-   send(ch, message) {
-      invariant(target && target.postMessage, '`target` can\'t invoke `postMessage`');
+   const send = (ch, message) => {
+      invariant(target && target.postMessage, '`target` can\'t call `postMessage` function');
 
       target.postMessage(
          encode(ch, message),
          origin
       );
+   };
+
+   return {
+      listener,
+      channels,
+      off,
+      on,
+      once,
+      send,
    }
-
-   listener() { return event_listener }
 }
-
-export default new Framelet();
