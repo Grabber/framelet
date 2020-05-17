@@ -4,13 +4,13 @@
    <meta charset="UTF-8">
    
    <style type="text/css">
-      .app {
+      .child {
          display: block;
          left: 0px;
          top: 0px;
       }
 
-      .app-container {
+      .child-container {
          bottom: auto;
          display: block;
          height: 100%;
@@ -20,7 +20,7 @@
          top: 0px;
       }
 
-      .app-container-1 {
+      .child-container-1 {
          border: none;
          height: 100%;
          left: auto;
@@ -45,16 +45,16 @@
       <pre id="list"></pre>
    </div>
 
-   <div class="app" id="app">
-      <div class="app-container" id="app-container">
-         <iframe name="app" src="//127.0.0.1:8080/example/app.html" class="app-container-1" id="app-container-1"></iframe>
+   <div class="child" id="child">
+      <div class="child-container" id="child-container">
+         <iframe name="child" src="//127.0.0.1:8080/example/child.html" class="child-container-1" id="child-container-1"></iframe>
       </div>
    </div>
 
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var framelet = new Framelet('framelet', document.querySelector('#app-container-1').contentWindow);
+      var framelet = new Framelet('example', document.querySelector('#child-container-1').contentWindow);
 
       function listener(message) {
          const r = document.querySelector('#list');
@@ -63,22 +63,22 @@
       }
 
       function onceListener() {
-         framelet.once('app.*', listener);
+         framelet.once('topic.*', listener);
       }
 
       function onListener() {
-         framelet.on('app.*', listener);
+         framelet.on('topic.*', listener);
       }
 
       function offListener() {
-         framelet.off('app.*', listener);
+         framelet.off('topic.*', listener);
       }
 
       function sendMessage() {
-         framelet.send('app.data', new Date() + ' => ' + 'hello world!');
+         framelet.send('topic.data', new Date() + ' => ' + 'hello world!');
       }
 
-      framelet.on('app.*', listener);
+      framelet.on('topic.*', listener);
    </script>
 </body>
 </html>
