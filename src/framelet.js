@@ -8,9 +8,9 @@ export default (project, target, origin = '*') => {
    let channels = [];
    let event_listener = null;
 
-   const encode = (channel, message) => {
+   const encode = (topic, message) => {
       return JSON.stringify({
-         channel,
+         topic,
          message,
          project,
       });
@@ -37,13 +37,13 @@ export default (project, target, origin = '*') => {
 
    const listenerEntry = () => {
       return e => {
-         const { channel: msg_channel, message, project: msg_project } = decode(e.data);
+         const { topic: msg_topic, message, project: msg_project } = decode(e.data);
 
          if (msg_project === project) {
             for (let i = 0; i < channels.length; i += 1) {
                const { ch, cb, once } = channels[i];
 
-               if (namespace(ch).match(msg_channel)) {
+               if (namespace(ch).match(msg_topic)) {
                   if (once) {
                      channels.splice(i, 1);
 
