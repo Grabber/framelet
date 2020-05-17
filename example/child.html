@@ -12,15 +12,12 @@
    <title>framelet - child</title>
 </head>
 <body>
+   <h1>child</h1>
    <div>
-      <div>
-         <input type="button" value="once" onclick="javascript:onceListener();"/>
-         <input type="button" value="on" onclick="javascript:onListener();"/>
-         <input type="button" value="off" onclick="javascript:offListener();"/>
-         <input type="button" value="send to parent" onclick="javascript:sendMessage();"/>
-      </div>
-
-      <pre id="list"></pre>
+      <input type="button" value="once" onclick="javascript:onceListener();"/>
+      <input type="button" value="on" onclick="javascript:onListener();"/>
+      <input type="button" value="off" onclick="javascript:offListener();"/>
+      <input type="button" value="send to parent" onclick="javascript:sendMessage();"/>
    </div>
 
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
@@ -28,10 +25,8 @@
    <script type="application/javascript">
       var framelet = new Framelet('example', window.parent);
 
-      function listener(message) {
-         const r = document.querySelector('#list');
-         console.log(message);
-         r.innerHTML = r.innerHTML + '\n' + message;
+      function listener(msg) {
+         console.log(msg);
       }
 
       function onceListener() {
