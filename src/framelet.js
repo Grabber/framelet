@@ -6,7 +6,7 @@ import { registerEventListener, unregisterEventListener, invariant } from './uti
 
 export default (project, target, origin = '*') => {
    let channels = [];
-   let listener = null;
+   let event_listener = null;
 
    const encode = (channel, message) => {
       return JSON.stringify({
@@ -28,10 +28,10 @@ export default (project, target, origin = '*') => {
    };
 
    const check = () => {
-      if (channels.length === 0 && listener) {
-         unregisterEventListener(listener);
+      if (channels.length === 0 && event_listener) {
+         unregisterEventListener(event_listener);
 
-         listener = null;
+         event_listener = null;
       }
    };
 
@@ -61,9 +61,9 @@ export default (project, target, origin = '*') => {
 
    const on = (ch, cb, once = false) => {
       if (channels.length === 0) {
-         listener = listenerEntry();
+         event_listener = listenerEntry();
 
-         registerEventListener(listener);
+         registerEventListener(event_listener);
       }
 
       channels.push({
@@ -104,9 +104,11 @@ export default (project, target, origin = '*') => {
       );
    };
 
+   const listener = () => event_listener
+
    return {
-      listener,
       channels,
+      listener,
       off,
       on,
       once,
