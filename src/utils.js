@@ -1,6 +1,6 @@
 'use strict';
 
-export const wpm = () => typeof window !== 'undefined' && !!window.postMessage;
+const wpm = () => typeof window !== 'undefined' && !!window.postMessage;
 
 export const registerEventListener = listener => {
    wpm() && window.addEventListener('message', listener, false);

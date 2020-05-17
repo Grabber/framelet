@@ -4,19 +4,22 @@ import namespace from './namespace';
 
 import { registerEventListener, unregisterEventListener, invariant } from './utils';
 
-export default (project, target, origin = '*') => {
-   let channels = [];
-   let event_listener = null;
+class Framelet {
+   constructor(namespace, target, origin = '*') {
+      let channels = [];
+      let event_listener = null;
+      let child = target;
+   }
 
-   const encode = (topic, message) => {
+   encode(topic, message) {
       return JSON.stringify({
-         topic,
          message,
-         project,
+         namespace,
+         topic,
       });
-   };
+   }
 
-   const decode = message => {
+   decode(message) {
       let m = {};
 
       try {
@@ -25,21 +28,21 @@ export default (project, target, origin = '*') => {
       }
 
       return m;
-   };
+   }
 
-   const check = () => {
+   check() {
       if (channels.length === 0 && event_listener) {
          unregisterEventListener(event_listener);
 
          event_listener = null;
       }
-   };
+   }
 
-   const listenerEntry = () => {
+   listenerEntry() {
       return e => {
-         const { topic: msg_topic, message, project: msg_project } = decode(e.data);
+         const { topic: msg_topic, message, namespace: msg_namespace } = decode(e.data);
 
-         if (msg_project === project) {
+         if (msg_namespace === namespace) {
             for (let i = 0; i < channels.length; i += 1) {
                const { ch, cb, once } = channels[i];
 
@@ -57,9 +60,9 @@ export default (project, target, origin = '*') => {
             check();
          }
       }
-   };
+   }
 
-   const on = (ch, cb, once = false) => {
+   on(ch, cb, once = false) {
       if (channels.length === 0) {
          event_listener = listenerEntry();
 
@@ -71,13 +74,13 @@ export default (project, target, origin = '*') => {
          cb,
          once,
       });
-   };
+   }
 
-   const once = (ch, cb) => {
+   once(ch, cb) {
       on(ch, cb, true);
-   };
+   }
 
-   const off = (ch, cb) => {
+   off(ch, cb) {
       if (ch === undefined && cb === undefined) {
          channels = [];
       } else {
@@ -93,25 +96,18 @@ export default (project, target, origin = '*') => {
       }
 
       check();
-   };
+   }
 
-   const send = (ch, message) => {
-      invariant(target && target.postMessage, '`target` can\'t call `postMessage` function');
+   send(ch, message) {
+      invariant(target && target.postMessage, '`target` can\'t invoke `postMessage`');
 
       target.postMessage(
          encode(ch, message),
          origin
       );
-   };
-
-   const listener = () => event_listener
-
-   return {
-      channels,
-      listener,
-      off,
-      on,
-      once,
-      send,
    }
+
+   listener() { return event_listener }
 }
+
+export default new Framelet();
