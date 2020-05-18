@@ -1,4 +1,4 @@
-# Framelet - the lighweight messaging library for iframes
+# Framelet - lighweight messaging library for iframes
 
 ```
   ______                        _      _   
