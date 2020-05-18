@@ -23,7 +23,7 @@
    <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var framelet = new Framelet(window.parent);
+      var framelet = new Framelet('V1StGXR8_Z5jdHi6B-myT', window.parent);
 
       function listener(msg) {
          console.log(msg);
@@ -42,7 +42,7 @@
       }
 
       function sendMessage() {
-         framelet.send('topic.msg', new Date() + ' => ' + 'hello world!');
+         framelet.send('topic.msg', new Date().getMilliseconds() + ' => ' + 'hello world!');
       }
 
       framelet.on('topic.*', listener);

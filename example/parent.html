@@ -61,7 +61,7 @@
          container.appendChild(iframe);
       }
 
-      var framelet = new Framelet(iframe.contentWindow);
+      var framelet = new Framelet('V1StGXR8_Z5jdHi6B-myT', iframe.contentWindow);
 
       function listener(msg) {
          console.log(msg);
@@ -86,7 +86,7 @@
       }
 
       function sendMessage() {
-         framelet.send('topic.data', new Date() + ' => ' + 'hello world!');
+         framelet.send('topic.data', new Date().getMilliseconds() + ' => ' + 'hello world!');
       }
 
       framelet.on('topic.*', listener);

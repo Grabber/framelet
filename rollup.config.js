@@ -1,5 +1,6 @@
 import babel from '@rollup/plugin-babel';
 import buble from '@rollup/plugin-buble';
+import replace from '@rollup/plugin-replace';
 import resolve from '@rollup/plugin-node-resolve';
 
 import { terser } from 'rollup-plugin-terser';
@@ -12,6 +13,9 @@ export default {
       name: 'Framelet',
    },
    plugins: [
+      replace({
+         'process.env.NODE_ENV': JSON.stringify( 'production' )
+      }),
       babel({
          babelHelpers: 'bundled',
          babelrc: false,

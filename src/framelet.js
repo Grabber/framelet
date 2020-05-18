@@ -8,10 +8,9 @@ import { invariant,
          registerEventListener,
          unregisterEventListener } from './utils';
 
-export default (target, origin = '*') => {
+export default (signature, target, origin = '*') => {
    let channels = [];
    let event_listener = null;
-   let signature = nanoid();
 
    const encode = (topic, message) => {
       return JSON.stringify({
@@ -106,6 +105,8 @@ export default (target, origin = '*') => {
          origin
       );
    };
+
+   const listener = () => { return event_listener; }
 
    return {
       channels,
