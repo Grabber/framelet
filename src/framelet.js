@@ -96,7 +96,7 @@ export default (context, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      invariant(target && target.postMessage, 'can\'t call `postMessage`');
+      invariant(target && target.postMessage, '`postMessage` isn\'t supported');
 
       target.postMessage(
          encode(topic, message),
