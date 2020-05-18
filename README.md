@@ -18,22 +18,22 @@ There is only one function named `Framelet`, you can get the instance by:
 const framelet = Framelet('<CHANNEL>', targetContentWindow);
 ```
 
-### add a message listener on channel for once
+Add a message listener on channel for once
 ```js
 framelet.once('<TOPIC>', () => {});
 ```
 
-### add a message listener on topic
+Add a message listener on topic
 ```js
 framelet.on('<TOPIC>', () => {});
 ```
 
-### send a message to the topic
+Send a message to the topic
 ```js
 framelet.send('<TOPIC>', '<MESSAGE>');
 ```
 
-### if both topic and listener are undefined, remove all
+If both topic and listener are undefined, remove all
 ```js
 framelet.off(['<TOPIC>', () => {}]);
 ```
@@ -74,4 +74,4 @@ framelet.send('*', 'Hi from child!');
 
 
 ## REFERENCE
-https://github.com/hustcc/post-messenger
+- https://github.com/hustcc/post-messenger
