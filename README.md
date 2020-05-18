@@ -15,27 +15,27 @@
 There is only one function named `Framelet`, you can get the instance by:
 
 ```js
-const framelet = Framelet('<signature>', targetContentWindow);
+const framelet = Framelet('<CHANNEL>', targetContentWindow);
 ```
 
-### add a message listener on channel for once.
-```
-framelet.once('<topic>', listener)**
-```
-
-### add a message listener on `topic`
-```
-framelet.on('<topic>', listener)
+### add a message listener on channel for once
+```text
+framelet.once('<TOPIC>', () => {});
 ```
 
-### send a message to the `topic`
-```
-framelet.send('<topic>', message)
+### add a message listener on topic
+```text
+framelet.on('<TOPIC>', () => {});
 ```
 
-### remove listener, if both `topic` and `listener` are `undefined`, remove all
+### send a message to the topic
+```text
+framelet.send('<TOPIC>', '<MESSAGE>');
 ```
-framelet.off(['<topic>', listener])
+
+### if both topic and listener are undefined, remove all
+```text
+framelet.off(['<TOPIC>', () => {}]);
 ```
 
 ## EXAMPLE

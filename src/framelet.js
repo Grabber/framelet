@@ -6,7 +6,7 @@ import { invariant,
          registerEventListener,
          unregisterEventListener } from './utils';
 
-export default (signature, target, origin = '*') => {
+export default (channel, target, origin = '*') => {
    let listener = null;
    let listeners = [];
 
@@ -14,7 +14,7 @@ export default (signature, target, origin = '*') => {
       return JSON.stringify({
          topic,
          message,
-         signature,
+         channel,
       });
    };
 
@@ -37,9 +37,9 @@ export default (signature, target, origin = '*') => {
 
    const listenerEntry = () => {
       return e => {
-         const { topic: _topic, message, signature: _signature } = decode(e.data);
+         const { topic: _topic, message, channel: _channel } = decode(e.data);
 
-         if (_signature === signature) {
+         if (_channel === channel) {
             for (let i = 0; i < listeners.length; i += 1) {
                const { topic, cb, once } = listeners[i];
 
