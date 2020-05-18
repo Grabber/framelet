@@ -51,11 +51,11 @@ iframe.src = '//<URL>/child.html';
 
 const framelet = Framelet('<CONTEXT>', iframe.contentWindow);
 
-framelet.on('*', (message) => {
+framelet.on('<TOPIC>.*', (message) => {
    console.log(message);
 });
 
-framelet.send('*', 'Hi from parent!');
+framelet.send('<TOPIC>.*', 'Hi, from parent!');
 ```
 
 ### CHILD
@@ -65,11 +65,11 @@ import Framelet from 'framelet';
 
 const framelet = Framelet('<CONTEXT>', window.parent);
 
-framelet.on('*', (message) => {
+framelet.on('<TOPIC>.*', (message) => {
    console.log(message);
 });
 
-framelet.send('*', 'Hi from child!');
+framelet.send('<TOPIC>.*', 'Hi, from child!');
 ```
 
 ### COMPATIBILITY
