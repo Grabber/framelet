@@ -96,7 +96,7 @@ export default (signature, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      invariant(target && target.postMessage, '`target` can\'t call `postMessage`');
+      invariant(target && target.postMessage, 'can\'t call `postMessage`');
 
       target.postMessage(
          encode(topic, message),
