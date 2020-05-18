@@ -9,8 +9,8 @@ import { invariant,
          unregisterEventListener } from './utils';
 
 export default (signature, target, origin = '*') => {
-   let channels = [];
    let event_listener = null;
+   let listeners = [];
 
    const encode = (topic, message) => {
       return JSON.stringify({
@@ -32,7 +32,7 @@ export default (signature, target, origin = '*') => {
    };
 
    const check = () => {
-      if (channels.length === 0 && event_listener) {
+      if (listeners.length === 0 && event_listener) {
          unregisterEventListener(event_listener);
          event_listener = null;
       }
@@ -43,12 +43,12 @@ export default (signature, target, origin = '*') => {
          const { topic: _topic, message, signature: _signature } = decode(e.data);
 
          if (_signature === signature) {
-            for (let i = 0; i < channels.length; i += 1) {
-               const { topic, cb, once } = channels[i];
+            for (let i = 0; i < listeners.length; i += 1) {
+               const { topic, cb, once } = listeners[i];
 
                if (namespace(topic).match(_topic)) {
                   if (once) {
-                     channels.splice(i, 1);
+                     listeners.splice(i, 1);
 
                      i -= 1;
                   }
@@ -63,12 +63,12 @@ export default (signature, target, origin = '*') => {
    };
 
    const on = (topic, cb, once = false) => {
-      if (channels.length === 0) {
+      if (listeners.length === 0) {
          event_listener = eventListener();
          registerEventListener(event_listener);
       }
 
-      channels.push({
+      listeners.push({
          topic,
          cb,
          once,
@@ -81,13 +81,13 @@ export default (signature, target, origin = '*') => {
 
    const off = (topic, cb) => {
       if (topic === undefined && cb === undefined) {
-         channels = [];
+         listeners = [];
       } else {
-         for (let i = 0; i < channels.length; i += 1) {
-            const { topic: t, cb: c } = channels[i];
+         for (let i = 0; i < listeners.length; i += 1) {
+            const { topic: t, cb: c } = listeners[i];
 
             if (t === topic && c === cb) {
-               channels.splice(i, 1);
+               listeners.splice(i, 1);
 
                i -= 1;
             }
@@ -109,8 +109,8 @@ export default (signature, target, origin = '*') => {
    const listener = () => { return event_listener; }
 
    return {
-      channels,
       listener,
+      listeners,
       off,
       on,
       once,
