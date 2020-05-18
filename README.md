@@ -38,7 +38,7 @@ If both topic and listener are undefined, remove all
 framelet.off(['<TOPIC>', () => {}]);
 ```
 
-## EXAMPLE
+## EXAMPLE #1
 
 ### PARENT
 
@@ -84,7 +84,7 @@ The communicate target can be:
 - Window.opener
 - Window.parent
 
-Reference [here](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage).
 
-## REFERENCE
-- https://github.com/hustcc/post-messenger
+## REFERENCES
+- [hustcc/post-messager](https://github.com/hustcc/post-messenger)
+- [Mozilla/postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage).
