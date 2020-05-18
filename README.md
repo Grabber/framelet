@@ -87,4 +87,4 @@ The communicate target can be:
 
 ## REFERENCES
 - [hustcc/post-messager](https://github.com/hustcc/post-messenger)
-- [Mozilla/postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage).
+- [Mozilla/postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)
