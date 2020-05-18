@@ -2,15 +2,13 @@
 
 import namespace from './namespace';
 
-import { nanoid } from 'nanoid';
-
 import { invariant,
          registerEventListener,
          unregisterEventListener } from './utils';
 
 export default (signature, target, origin = '*') => {
-   let event_listener = null;
-   let listeners = [];
+   let _listener = null;
+   let _listeners = [];
 
    const encode = (topic, message) => {
       return JSON.stringify({
@@ -32,9 +30,9 @@ export default (signature, target, origin = '*') => {
    };
 
    const check = () => {
-      if (listeners.length === 0 && event_listener) {
-         unregisterEventListener(event_listener);
-         event_listener = null;
+      if (_listeners.length === 0 && _listener) {
+         unregisterEventListener(_listener);
+         _listener = null;
       }
    };
 
@@ -43,12 +41,12 @@ export default (signature, target, origin = '*') => {
          const { topic: _topic, message, signature: _signature } = decode(e.data);
 
          if (_signature === signature) {
-            for (let i = 0; i < listeners.length; i += 1) {
-               const { topic, cb, once } = listeners[i];
+            for (let i = 0; i < _listeners.length; i += 1) {
+               const { topic, cb, once } = _listeners[i];
 
                if (namespace(topic).match(_topic)) {
                   if (once) {
-                     listeners.splice(i, 1);
+                     _listeners.splice(i, 1);
 
                      i -= 1;
                   }
@@ -63,12 +61,12 @@ export default (signature, target, origin = '*') => {
    };
 
    const on = (topic, cb, once = false) => {
-      if (listeners.length === 0) {
-         event_listener = eventListener();
-         registerEventListener(event_listener);
+      if (_listeners.length === 0) {
+         _listener = eventListener();
+         registerEventListener(_listener);
       }
 
-      listeners.push({
+      _listeners.push({
          topic,
          cb,
          once,
@@ -81,13 +79,13 @@ export default (signature, target, origin = '*') => {
 
    const off = (topic, cb) => {
       if (topic === undefined && cb === undefined) {
-         listeners = [];
+         _listeners = [];
       } else {
-         for (let i = 0; i < listeners.length; i += 1) {
-            const { topic: t, cb: c } = listeners[i];
+         for (let i = 0; i < _listeners.length; i += 1) {
+            const { topic: t, cb: c } = _listeners[i];
 
             if (t === topic && c === cb) {
-               listeners.splice(i, 1);
+               _listeners.splice(i, 1);
 
                i -= 1;
             }
@@ -106,11 +104,7 @@ export default (signature, target, origin = '*') => {
       );
    };
 
-   const listener = () => { return event_listener; }
-
    return {
-      listener,
-      listeners,
       off,
       on,
       once,
