@@ -72,7 +72,7 @@ framelet.on('<TOPIC>.*', (message) => {
 framelet.send('<TOPIC>.*', 'Hi, from child!');
 ```
 
-### COMPATIBILITY
+### POST MESSAGE
 
 > The window.postMessage() method safely enables cross-origin communication between Window objects; e.g., between a page and a pop-up that it spawned, or between a page and an iframe embedded within it.
 
