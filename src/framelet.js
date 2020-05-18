@@ -2,19 +2,22 @@
 
 import namespace from './namespace';
 
+import { nanoid } from 'nanoid';
+
 import { invariant,
          registerEventListener,
          unregisterEventListener } from './utils';
 
-export default (sandbox, target, origin = '*') => {
+export default (target, origin = '*') => {
    let channels = [];
-   let listener = null;
+   let event_listener = null;
+   let signature = nanoid();
 
-   const encode = (channel, message) => {
+   const encode = (topic, message) => {
       return JSON.stringify({
-         channel,
+         topic,
          message,
-         sandbox,
+         signature,
       });
    };
 
@@ -30,22 +33,21 @@ export default (sandbox, target, origin = '*') => {
    };
 
    const check = () => {
-      if (channels.length === 0 && listener) {
-         unregisterEventListener(listener);
-
-         listener = null;
+      if (channels.length === 0 && event_listener) {
+         unregisterEventListener(event_listener);
+         event_listener = null;
       }
    };
 
-   const listenerEntry = () => {
+   const eventListener = () => {
       return e => {
-         const { channel: msg_channel, message, sandbox: msg_sandbox } = decode(e.data);
+         const { topic: _topic, message, signature: _signature } = decode(e.data);
 
-         if (msg_sandbox === sandbox) {
+         if (_signature === signature) {
             for (let i = 0; i < channels.length; i += 1) {
-               const { ch, cb, once } = channels[i];
+               const { topic, cb, once } = channels[i];
 
-               if (namespace(ch).match(msg_channel)) {
+               if (namespace(topic).match(_topic)) {
                   if (once) {
                      channels.splice(i, 1);
 
@@ -61,32 +63,31 @@ export default (sandbox, target, origin = '*') => {
       }
    };
 
-   const on = (ch, cb, once = false) => {
+   const on = (topic, cb, once = false) => {
       if (channels.length === 0) {
-         listener = listenerEntry();
-
-         registerEventListener(listener);
+         event_listener = eventListener();
+         registerEventListener(event_listener);
       }
 
       channels.push({
-         ch,
+         topic,
          cb,
          once,
       });
    };
 
-   const once = (ch, cb) => {
-      on(ch, cb, true);
+   const once = (topic, cb) => {
+      on(topic, cb, true);
    };
 
-   const off = (ch, cb) => {
-      if (ch === undefined && cb === undefined) {
+   const off = (topic, cb) => {
+      if (topic === undefined && cb === undefined) {
          channels = [];
       } else {
          for (let i = 0; i < channels.length; i += 1) {
-            const { ch: h, cb: b } = channels[i];
+            const { topic: t, cb: c } = channels[i];
 
-            if (h === ch && b === cb) {
+            if (t === topic && c === cb) {
                channels.splice(i, 1);
 
                i -= 1;
@@ -97,18 +98,18 @@ export default (sandbox, target, origin = '*') => {
       check();
    };
 
-   const send = (ch, message) => {
+   const send = (topic, message) => {
       invariant(target && target.postMessage, '`target` can\'t call `postMessage` function');
 
       target.postMessage(
-         encode(ch, message),
+         encode(topic, message),
          origin
       );
    };
 
    return {
-      listener,
       channels,
+      listener,
       off,
       on,
       once,

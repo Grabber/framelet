@@ -61,7 +61,7 @@
          container.appendChild(iframe);
       }
 
-      var framelet = new Framelet('example', iframe.contentWindow);
+      var framelet = new Framelet(iframe.contentWindow);
 
       function listener(msg) {
          console.log(msg);
