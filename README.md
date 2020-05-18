@@ -1,4 +1,4 @@
-# Framelet - the lighweight messaging library
+# Framelet - the lighweight messaging library for iframes
 
 ```
   ______                        _      _   
@@ -75,14 +75,6 @@ framelet.send('<TOPIC>.*', 'Hi, from child!');
 ### COMPATIBILITY
 
 > The window.postMessage() method safely enables cross-origin communication between Window objects; e.g., between a page and a pop-up that it spawned, or between a page and an iframe embedded within it.
-
-The communicate target can be:
-
-- HTMLIFrameElement.contentWindow
-- Window.frames
-- Window.open
-- Window.opener
-- Window.parent
 
 
 ## REFERENCES
