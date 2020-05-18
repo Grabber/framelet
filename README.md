@@ -71,3 +71,7 @@ framelet.on('*', (message) => {
 
 framelet.send('*', 'Hi from child!');
 ```
+
+
+## REFERENCE
+https://github.com/hustcc/post-messenger
