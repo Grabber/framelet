@@ -7,8 +7,8 @@ import { invariant,
          unregisterEventListener } from './utils';
 
 export default (signature, target, origin = '*') => {
-   let _listener = null;
-   let _listeners = [];
+   let listener = null;
+   let listeners = [];
 
    const encode = (topic, message) => {
       return JSON.stringify({
@@ -30,23 +30,22 @@ export default (signature, target, origin = '*') => {
    };
 
    const check = () => {
-      if (_listeners.length === 0 && _listener) {
-         unregisterEventListener(_listener);
-         _listener = null;
+      if (listeners.length === 0 && listener) {
+         listener = unregisterEventListener(listener);
       }
    };
 
-   const eventListener = () => {
+   const listenerEntry = () => {
       return e => {
          const { topic: _topic, message, signature: _signature } = decode(e.data);
 
          if (_signature === signature) {
-            for (let i = 0; i < _listeners.length; i += 1) {
-               const { topic, cb, once } = _listeners[i];
+            for (let i = 0; i < listeners.length; i += 1) {
+               const { topic, cb, once } = listeners[i];
 
                if (namespace(topic).match(_topic)) {
                   if (once) {
-                     _listeners.splice(i, 1);
+                     listeners.splice(i, 1);
 
                      i -= 1;
                   }
@@ -61,12 +60,13 @@ export default (signature, target, origin = '*') => {
    };
 
    const on = (topic, cb, once = false) => {
-      if (_listeners.length === 0) {
-         _listener = eventListener();
-         registerEventListener(_listener);
+      if (listeners.length === 0) {
+         listener = listenerEntry();
+
+         registerEventListener(listener);
       }
 
-      _listeners.push({
+      listeners.push({
          topic,
          cb,
          once,
@@ -79,13 +79,13 @@ export default (signature, target, origin = '*') => {
 
    const off = (topic, cb) => {
       if (topic === undefined && cb === undefined) {
-         _listeners = [];
+         listeners = [];
       } else {
-         for (let i = 0; i < _listeners.length; i += 1) {
-            const { topic: t, cb: c } = _listeners[i];
+         for (let i = 0; i < listeners.length; i += 1) {
+            const { topic: t, cb: c } = listeners[i];
 
             if (t === topic && c === cb) {
-               _listeners.splice(i, 1);
+               listeners.splice(i, 1);
 
                i -= 1;
             }
@@ -96,7 +96,7 @@ export default (signature, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      invariant(target && target.postMessage, '`target` can\'t call `postMessage` function');
+      invariant(target && target.postMessage, '`target` can\'t call `postMessage`');
 
       target.postMessage(
          encode(topic, message),
@@ -104,10 +104,5 @@ export default (signature, target, origin = '*') => {
       );
    };
 
-   return {
-      off,
-      on,
-      once,
-      send,
-   }
+   return { off, on, once, send }
 }
