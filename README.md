@@ -45,7 +45,11 @@ framelet.off(['<TOPIC>', () => {}]);
 ```js
 import Framelet from 'framelet';
 
-const framelet = Framelet('<SIGNATURE>', window.iframe_name.contentWindow);
+var iframe = document.createElement('iframe');
+iframe.id = 'framelet_iframe';
+iframe.src = '//<URL>/child.html';
+
+const framelet = Framelet('<CHANNEL>', iframe.contentWindow);
 
 framelet.on('*', (message) => {
    console.log(message);
@@ -59,7 +63,7 @@ framelet.send('*', 'Hi from parent!');
 ```js
 import Framelet from 'framelet';
 
-const framelet = Framelet('<SIGNATURE>', window.parent);
+const framelet = Framelet('<CHANNEL>', window.parent);
 
 framelet.on('*', (message) => {
    console.log(message);
