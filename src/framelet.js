@@ -6,15 +6,15 @@ import { invariant,
          registerEventListener,
          unregisterEventListener } from './utils';
 
-export default (channel, target, origin = '*') => {
+export default (context, target, origin = '*') => {
+   let channels = [];
    let listener = null;
-   let listeners = [];
 
    const encode = (topic, message) => {
       return JSON.stringify({
          topic,
          message,
-         channel,
+         context,
       });
    };
 
@@ -30,22 +30,22 @@ export default (channel, target, origin = '*') => {
    };
 
    const check = () => {
-      if (listeners.length === 0 && listener) {
+      if (channels.length === 0 && listener) {
          listener = unregisterEventListener(listener);
       }
    };
 
    const listenerEntry = () => {
       return e => {
-         const { topic: _topic, message, channel: _channel } = decode(e.data);
+         const { topic: _topic, message, context: _context } = decode(e.data);
 
-         if (_channel === channel) {
-            for (let i = 0; i < listeners.length; i += 1) {
-               const { topic, cb, once } = listeners[i];
+         if (_context === context) {
+            for (let i = 0; i < channels.length; i += 1) {
+               const { topic, cb, once } = channels[i];
 
                if (namespace(topic).match(_topic)) {
                   if (once) {
-                     listeners.splice(i, 1);
+                     channels.splice(i, 1);
 
                      i -= 1;
                   }
@@ -60,13 +60,13 @@ export default (channel, target, origin = '*') => {
    };
 
    const on = (topic, cb, once = false) => {
-      if (listeners.length === 0) {
+      if (channels.length === 0) {
          listener = listenerEntry();
 
          registerEventListener(listener);
       }
 
-      listeners.push({
+      channels.push({
          topic,
          cb,
          once,
@@ -79,13 +79,13 @@ export default (channel, target, origin = '*') => {
 
    const off = (topic, cb) => {
       if (topic === undefined && cb === undefined) {
-         listeners = [];
+         channels = [];
       } else {
-         for (let i = 0; i < listeners.length; i += 1) {
-            const { topic: t, cb: c } = listeners[i];
+         for (let i = 0; i < channels.length; i += 1) {
+            const { topic: t, cb: c } = channels[i];
 
             if (t === topic && c === cb) {
-               listeners.splice(i, 1);
+               channels.splice(i, 1);
 
                i -= 1;
             }
@@ -104,5 +104,5 @@ export default (channel, target, origin = '*') => {
       );
    };
 
-   return { off, on, once, send }
+   return { off, on, once, send };
 }
