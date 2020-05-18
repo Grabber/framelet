@@ -19,22 +19,22 @@ const framelet = Framelet('<CHANNEL>', targetContentWindow);
 ```
 
 ### add a message listener on channel for once
-```text
+```js
 framelet.once('<TOPIC>', () => {});
 ```
 
 ### add a message listener on topic
-```text
+```js
 framelet.on('<TOPIC>', () => {});
 ```
 
 ### send a message to the topic
-```text
+```js
 framelet.send('<TOPIC>', '<MESSAGE>');
 ```
 
 ### if both topic and listener are undefined, remove all
-```text
+```js
 framelet.off(['<TOPIC>', () => {}]);
 ```
 
