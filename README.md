@@ -1,4 +1,4 @@
-# framelet
+# Framelet - the lighweight messaging library
 
 ```
   ______                        _      _   
