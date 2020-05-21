@@ -39,32 +39,33 @@
       <input type="button" value="once" onclick="javascript:onceListener();"/>
       <input type="button" value="on" onclick="javascript:onListener();"/>
       <input type="button" value="off" onclick="javascript:offListener();"/>
-      <input type="button" value="send to child" onclick="javascript:sendMessage();"/>
+      <input type="button" value="send from parent to child" onclick="javascript:sendMessage();"/>
    </div>
 
    <div class="child" id="child">
       <div class="child-container" id="child-container"></div>
    </div>
 
-   <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
+   <script src="//127.0.0.1:8082/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var iframe = document.createElement('iframe');
-      iframe.classList.add('child-container-iframe');
-      iframe.id = 'child-container-iframe';
-      iframe.name = 'child';
-      iframe.src = '//127.0.0.1:8080/example/child.html';
+      var frame = document.createElement('iframe');
+      frame.classList.add('child-container-iframe');
+      frame.id = 'child-container-iframe';
+      frame.loading = 'eager';
+      frame.onload = function (event) { console.log('child is loaded'); };
+      frame.src = '//127.0.0.1:8082/example/child.html';
 
       var container = document.getElementById('child-container');
 
       if (container) {
-         container.appendChild(iframe);
+         container.appendChild(frame);
       }
 
-      const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', iframe.contentWindow);
+      const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', frame.contentWindow || frame.contentDocument.parentWindow);
 
       function listener(msg) {
-         console.log(msg);
+         console.log('parent listener: ' + msg);
       }
 
       function onceListener() {
@@ -73,23 +74,17 @@
 
       function onListener() {
          framelet.on('topic.*', listener);
-
-         // var iframe = document.getElementById('child-container-iframe');
-
-         // if (iframe) {
-         //    iframe.style.display = 'none';
-         // }
       }
 
       function offListener() {
          framelet.off('topic.*', listener);
       }
 
-      function sendMessage() {
-         framelet.send('topic.data', new Date().getMilliseconds() + ' => ' + 'hello world!');
-      }
+      framelet.on('parent', listener);
 
-      framelet.on('topic.*', listener);
+      function sendMessage() {
+         framelet.send('child', 'message from parent to child ' + 1*new Date());
+      }
    </script>
 </body>
 </html>

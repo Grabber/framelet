@@ -17,16 +17,16 @@
       <input type="button" value="once" onclick="javascript:onceListener();"/>
       <input type="button" value="on" onclick="javascript:onListener();"/>
       <input type="button" value="off" onclick="javascript:offListener();"/>
-      <input type="button" value="send to parent" onclick="javascript:sendMessage();"/>
+      <input type="button" value="send from child to parent" onclick="javascript:sendMessage();"/>
    </div>
 
-   <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
+   <script src="//127.0.0.1:8082/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
       const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', window.parent);
 
       function listener(msg) {
-         console.log(msg);
+         console.log('child listener: ' + msg);
       }
 
       function onceListener() {
@@ -41,11 +41,11 @@
          framelet.off('topic.*', listener);
       }
 
-      function sendMessage() {
-         framelet.send('topic.msg', new Date().getMilliseconds() + ' => ' + 'hello world!');
-      }
+      framelet.on('child', listener);
 
-      framelet.on('topic.*', listener);
+      function sendMessage() {
+         framelet.send('parent', 'message from child to parent ' + 1*new Date());
+      }
    </script>
 </body>
 </html>
