@@ -49,7 +49,7 @@ export default (context, target, origin = '*') => {
                      i -= 1;
                   }
 
-                  cb(message || {}, e);
+                  cb(message, e);
                }
             }
 
