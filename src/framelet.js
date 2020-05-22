@@ -18,13 +18,12 @@ export default (context, target, origin = '*') => {
       });
    };
 
-   const decode = message => {
+   const decode = (message) => {
       let msg = {};
 
       try {
          msg = JSON.parse(message);
-      } catch (e) {
-      }
+      } catch (e) {}
 
       return msg;
    };
@@ -50,7 +49,7 @@ export default (context, target, origin = '*') => {
                      i -= 1;
                   }
 
-                  cb(message, e);
+                  cb(message || {}, e);
                }
             }
 
@@ -96,7 +95,7 @@ export default (context, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      invariant(target && target.postMessage, '`postMessage` isn\'t available');
+      invariant(target && target.postMessage, 'can\'t post message');
 
       target.postMessage(
          encode(topic, message),
