@@ -22,10 +22,21 @@
 
       .child-container-iframe {
          border: none;
+         height: 50%;
+         left: auto;
+         overflow: auto;
+         position: fixed;
+         right: 0px;
+         width: 50%;
+      }
+
+      .child-container-iframe-2 {
+         border: none;
          height: 100%;
          left: auto;
          overflow: auto;
          position: fixed;
+         top: 50%;
          right: 0px;
          width: 50%;
       }
@@ -39,14 +50,14 @@
       <input type="button" value="once" onclick="javascript:onceListener();"/>
       <input type="button" value="on" onclick="javascript:onListener();"/>
       <input type="button" value="off" onclick="javascript:offListener();"/>
-      <input type="button" value="send from parent to child" onclick="javascript:sendMessage();"/>
+      <input type="button" value="send from parent to everyone" onclick="javascript:sendMessage();"/>
    </div>
 
    <div class="child" id="child">
       <div class="child-container" id="child-container"></div>
    </div>
 
-   <script src="//127.0.0.1:8080/dist/framelet.min.js"></script>
+   <script src="//127.0.0.1:8081/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
       var frame = document.createElement('iframe');
@@ -54,7 +65,7 @@
       frame.id = 'child-container-iframe';
       frame.loading = 'eager';
       frame.onload = function (event) { console.log('child is loaded'); };
-      frame.src = '//127.0.0.1:8080/example/child.html';
+      frame.src = '//127.0.0.1:8081/example/child.html';
 
       var container = document.getElementById('child-container');
 
@@ -62,7 +73,24 @@
          container.appendChild(frame);
       }
 
-      const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', frame.contentWindow || frame.contentDocument.parentWindow);
+      var frame_2 = document.createElement('iframe');
+      frame_2.classList.add('child-container-iframe-2');
+      frame_2.id = 'child-container-iframe_2';
+      frame_2.loading = 'eager';
+      frame_2.onload = function (event) { console.log('uncle is loaded'); };
+      frame_2.src = '//127.0.0.1:8081/example/uncle.html';
+
+      var container = document.getElementById('child-container');
+
+      if (container) {
+         container.appendChild(frame_2);
+      }
+
+      // enviar para vários frames?
+      const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', [
+         frame.contentWindow || frame.contentDocument.parentWindow,
+         frame_2.contentWindow || frame_2.contentDocument.parentWindow
+      ]);
 
       function listener(msg) {
          console.log('parent listener: ' + JSON.stringify(msg));
@@ -81,7 +109,10 @@
       }
 
       function sendMessage() {
+         framelet.send('uncle', 'message from parent to uncle => ' + 1*new Date());
          framelet.send('child', 'message from parent to child => ' + 1*new Date());
+
+         // framelet.send('*', 'message from parent to everyone => ' + 1*new Date());
       }
 
       framelet.on('*', listener);

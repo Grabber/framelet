@@ -94,13 +94,16 @@ export default (context, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      if (!target &&
-          !target.postMessage) { throw new Error('can\'t post message'); }
-
-      target.postMessage(
-         encode(topic, message),
-         origin
-      );
+      for (var i = 0; i < target.length; i++) {
+         if (target[i] && target[i].postMessage) {
+            target[i].postMessage(
+               encode(topic, message),
+               origin
+            );
+         } else {
+            console.log('can\'t post message');
+         }
+      }
    };
 
    return { off, on, once, send };

@@ -5,7 +5,7 @@
 
    <style type="text/css">
       body {
-         background-color: yellowgreen;
+         background-color: blue;
       }
    </style>
 
@@ -17,7 +17,7 @@
       <input type="button" value="once" onclick="javascript:onceListener();"/>
       <input type="button" value="on" onclick="javascript:onListener();"/>
       <input type="button" value="off" onclick="javascript:offListener();"/>
-      <input type="button" value="send from child to parent" onclick="javascript:sendMessage();"/>
+      <input type="button" value="send from uncle to parent" onclick="javascript:sendMessage();"/>
    </div>
 
    <script src="//127.0.0.1:8081/dist/framelet.min.js"></script>
@@ -26,7 +26,7 @@
       const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', [window.parent]);
 
       function listener(msg) {
-         console.log('child listener: ' + msg);
+         console.log('uncle listener: ' + msg);
       }
 
       function onceListener() {
@@ -42,12 +42,12 @@
       }
 
       function sendMessage() {
-         // framelet.send('parent', 'message from child to parent => ' + 1*new Date());
-         framelet.send('*', 'message from child to parent => ' + 1*new Date());
+         // framelet.send('parent', 'message from uncle to parent => ' + 1*new Date());
+         framelet.send('*', 'message from uncle to parent => ' + 1*new Date());
       }
 
       // framelet.on('*', listener);
-      framelet.on('child', listener);
+      framelet.on('uncle', listener);
    </script>
 </body>
 </html>
