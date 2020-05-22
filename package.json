@@ -3,7 +3,7 @@
   "description": "lightweight messaging library",
   "license": "MIT",
   "name": "framelet",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "scripts": {
     "build": "rollup -c rollup.config.js"
   },
