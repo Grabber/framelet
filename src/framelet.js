@@ -2,8 +2,7 @@
 
 import namespace from './namespace';
 
-import { invariant,
-         registerEventListener,
+import {   registerEventListener,
          unregisterEventListener } from './utils';
 
 export default (context, target, origin = '*') => {
@@ -95,7 +94,8 @@ export default (context, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
-      invariant(target && target.postMessage, 'can\'t post message');
+      if (!target &&
+          !target.postMessage) { throw new Error('can\'t post message'); }
 
       target.postMessage(
          encode(topic, message),

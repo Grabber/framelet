@@ -1,7 +1,5 @@
 'use strict';
 
-import { invariant } from './utils';
-
 function match(namespaces, needles, option) {
    const c = namespaces[0];
    const n = needles[0];
@@ -27,8 +25,10 @@ function match(namespaces, needles, option) {
    return match(oc, on, option);
 }
 
-const check = namespace => {
-   invariant(typeof namespace === 'string', '`namespace` must be a string');
+const check = (namespace) => {
+   if (typeof namespace !== 'string') {
+      throw new Error('`namespace` must be a string');
+   }
 };
 
 export default (namespace, opt) => {

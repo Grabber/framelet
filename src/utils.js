@@ -9,9 +9,3 @@ export const registerEventListener = listener => {
 export const unregisterEventListener = listener => {
    wpm() && window.removeEventListener('message', listener, false); return null;
 };
-
-export const invariant = (condition, msg) => {
-   if (!condition) {
-      throw new Error(msg);
-   }
-};
