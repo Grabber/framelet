@@ -1,9 +1,9 @@
 {
   "author": "Luiz Vitor Martinez Cardoso <luiz.martinez@medicaa.com.br>",
-  "description": "lightweight messaging library",
+  "description": "lightweight messaging library for iframes",
   "license": "MIT",
   "name": "framelet",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "scripts": {
     "build": "rollup -c rollup.config.js"
   },
