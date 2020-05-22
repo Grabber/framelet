@@ -94,6 +94,8 @@ export default (context, target, origin = '*') => {
    };
 
    const send = (topic, message) => {
+      if (!(target instanceof Array)) { console.log('`target` isn\'t an array'); return; }
+
       for (var i = 0; i < target.length; i++) {
          if (target[i] && target[i].postMessage) {
             target[i].postMessage(

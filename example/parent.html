@@ -60,7 +60,7 @@
    <script src="//127.0.0.1:8081/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      var frame = document.createElement('iframe');
+      window.frame = document.createElement('iframe');
       frame.classList.add('child-container-iframe');
       frame.id = 'child-container-iframe';
       frame.loading = 'eager';
@@ -73,7 +73,7 @@
          container.appendChild(frame);
       }
 
-      var frame_2 = document.createElement('iframe');
+      window.frame_2 = document.createElement('iframe');
       frame_2.classList.add('child-container-iframe-2');
       frame_2.id = 'child-container-iframe_2';
       frame_2.loading = 'eager';
@@ -88,8 +88,8 @@
 
       // enviar para vários frames?
       const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', [
-         frame.contentWindow || frame.contentDocument.parentWindow,
-         frame_2.contentWindow || frame_2.contentDocument.parentWindow
+         window.frame.contentWindow || window.frame.contentDocument.parentWindow,
+         window.frame_2.contentWindow || window.frame_2.contentDocument.parentWindow
       ]);
 
       function listener(msg) {
