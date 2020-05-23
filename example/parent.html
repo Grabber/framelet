@@ -20,24 +20,47 @@
          top: 0px;
       }
 
-      .child-container-iframe {
+      .child-container-iframe-1 {
          border: none;
-         height: 50%;
+         height: 25vh;
          left: auto;
          overflow: auto;
          position: fixed;
          right: 0px;
+         top: 0;
          width: 50%;
       }
 
       .child-container-iframe-2 {
          border: none;
-         height: 100%;
+         height: 25vh;
          left: auto;
          overflow: auto;
          position: fixed;
-         top: 50%;
          right: 0px;
+         top: 25vh;;
+         width: 50%;
+      }
+
+      .child-container-iframe-3 {
+         border: none;
+         height: 25vh;
+         left: auto;
+         overflow: auto;
+         position: fixed;
+         right: 0px;
+         top: 50%;
+         width: 50%;
+      }
+
+      .child-container-iframe-4 {
+         border: none;
+         height: 25vh;
+         left: auto;
+         overflow: auto;
+         position: fixed;
+         right: 0px;
+         top: 75%;
          width: 50%;
       }
    </style>
@@ -60,25 +83,27 @@
    <script src="//127.0.0.1:8081/dist/framelet.min.js"></script>
 
    <script type="application/javascript">
-      window.frame = document.createElement('iframe');
-      frame.classList.add('child-container-iframe');
-      frame.id = 'child-container-iframe';
-      frame.loading = 'eager';
-      frame.onload = function (event) { console.log('child is loaded'); };
-      frame.src = '//127.0.0.1:8081/example/child.html';
+      var frame_1 = document.createElement('iframe');
+      frame_1.classList.add('child-container-iframe-1');
+      frame_1.id = 'child_container_iframe_1';
+      frame_1.loading = 'eager';
+      frame_1.onload = function (event) { console.log('child_1 is loaded'); };
+      frame_1.src = '//127.0.0.1:8081/example/child.html';
 
       var container = document.getElementById('child-container');
 
       if (container) {
-         container.appendChild(frame);
+         container.appendChild(frame_1);
       }
 
-      window.frame_2 = document.createElement('iframe');
+      //
+
+      var frame_2 = document.createElement('iframe');
       frame_2.classList.add('child-container-iframe-2');
-      frame_2.id = 'child-container-iframe_2';
+      frame_2.id = 'child_container_iframe_2';
       frame_2.loading = 'eager';
-      frame_2.onload = function (event) { console.log('uncle is loaded'); };
-      frame_2.src = '//127.0.0.1:8081/example/uncle.html';
+      frame_2.onload = function (event) { console.log('child_2 is loaded'); };
+      frame_2.src = '//127.0.0.1:8081/example/child.html';
 
       var container = document.getElementById('child-container');
 
@@ -86,10 +111,41 @@
          container.appendChild(frame_2);
       }
 
-      // enviar para vários frames?
+      //
+
+      var frame_3 = document.createElement('iframe');
+      frame_3.classList.add('child-container-iframe-3');
+      frame_3.id = 'child_container_iframe_3';
+      frame_3.loading = 'eager';
+      frame_3.onload = function (event) { console.log('child_3 is loaded'); };
+      frame_3.src = '//127.0.0.1:8081/example/child.html';
+
+      var container = document.getElementById('child-container');
+
+      if (container) {
+         container.appendChild(frame_3);
+      }
+
+      //
+
+      var frame_4 = document.createElement('iframe');
+      frame_4.classList.add('child-container-iframe-4');
+      frame_4.id = 'child_container_iframe_4';
+      frame_4.loading = 'eager';
+      frame_4.onload = function (event) { console.log('child_4 is loaded'); };
+      frame_4.src = '//127.0.0.1:8081/example/child.html';
+
+      var container = document.getElementById('child-container');
+
+      if (container) {
+         container.appendChild(frame_4);
+      }
+
       const framelet = Framelet('V1StGXR8_Z5jdHi6B-myT', [
-         window.frame.contentWindow || window.frame.contentDocument.parentWindow,
-         window.frame_2.contentWindow || window.frame_2.contentDocument.parentWindow
+         window.frame_1.contentWindow || window.frame_1.contentDocument.parentWindow,
+         window.frame_2.contentWindow || window.frame_2.contentDocument.parentWindow,
+         window.frame_3.contentWindow || window.frame_3.contentDocument.parentWindow,
+         window.frame_4.contentWindow || window.frame_4.contentDocument.parentWindow,
       ]);
 
       function listener(msg) {
@@ -109,13 +165,10 @@
       }
 
       function sendMessage() {
-         framelet.send('uncle', 'message from parent to uncle => ' + 1*new Date());
          framelet.send('child', 'message from parent to child => ' + 1*new Date());
-
-         // framelet.send('*', 'message from parent to everyone => ' + 1*new Date());
       }
 
-      framelet.on('*', listener);
+      framelet.on('parent', listener);
    </script>
 </body>
 </html>

@@ -42,11 +42,9 @@
       }
 
       function sendMessage() {
-         // framelet.send('parent', 'message from child to parent => ' + 1*new Date());
-         framelet.send('*', 'message from child to parent => ' + 1*new Date());
+         framelet.send('parent', 'message from child to parent => ' + 1*new Date());
       }
 
-      // framelet.on('*', listener);
       framelet.on('child', listener);
    </script>
 </body>
