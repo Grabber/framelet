@@ -3,7 +3,7 @@
   "description": "lightweight messaging library for iframes",
   "license": "MIT",
   "name": "framelet",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "build": "rollup -c rollup.config.js"
   },
