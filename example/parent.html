@@ -168,7 +168,13 @@
          framelet.send('child', 'message from parent to child => ' + 1*new Date());
       }
 
-      framelet.on('parent', listener);
+      // framelet.on('parent', listener);
+
+      framelet.on('parent', function(msg) {
+         framelet.send('child', 'rebroadcast => ' + JSON.stringify(msg));
+
+         console.log('parent listener: ' + JSON.stringify(msg));
+      });
    </script>
 </body>
 </html>
